@@ -30,6 +30,7 @@ class PostActivity : BaseActivity<PostPresenter>(), PostView {
         rcPost.adapter = adapter
 
         butRequest.setOnClickListener(View.OnClickListener { presenter.onViewCreated() })
+        butFetch.setOnClickListener(View.OnClickListener { presenter.loadLocalData() })
     }
 
     override fun onDestroy() {

@@ -2,6 +2,7 @@ package com.viiam.room.database
 
 import android.arch.persistence.room.*
 import com.viiam.room.model.Post
+import io.reactivex.Flowable
 import io.reactivex.Observable
 
 
@@ -9,7 +10,7 @@ import io.reactivex.Observable
 interface PostDao{
 
     @Query("SELECT * from post_table")
-    fun getAllPost(): List<Post>
+    fun getAllPost(): Flowable<List<Post>>
 
     @Insert( onConflict = OnConflictStrategy.REPLACE )
     fun insert(post: Post)

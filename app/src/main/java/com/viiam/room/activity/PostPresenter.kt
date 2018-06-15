@@ -1,6 +1,5 @@
 package com.viiam.room.activity
 
-import android.arch.lifecycle.LiveData
 import android.os.AsyncTask
 import android.util.Log
 import com.viiam.room.database.NemoDatabase
@@ -10,12 +9,9 @@ import com.viiam.room.network.PostApi
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 import javax.inject.Inject
-import org.reactivestreams.Subscriber
 import io.reactivex.disposables.CompositeDisposable
-import android.databinding.adapters.TextViewBindingAdapter.setText
-import io.reactivex.Observable
+
 
 
 class PostPresenter(postView: PostView) : BasePresenter<PostView>(postView) {
@@ -26,6 +22,7 @@ class PostPresenter(postView: PostView) : BasePresenter<PostView>(postView) {
     lateinit var postApi: PostApi
 
     private var subscription: Disposable? = null
+    val compositeDisposable = CompositeDisposable()
     private var postDao: PostDao
 
     init {
@@ -34,6 +31,18 @@ class PostPresenter(postView: PostView) : BasePresenter<PostView>(postView) {
 
     override fun onViewCreated() {
         loadPosts()
+    }
+
+    fun loadLocalData(){
+
+        compositeDisposable.add(postDao.getAllPost()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    Log.e(TAG, "ALO "+it.size)
+                    view.updatePosts(it)
+                }))
+
     }
 
     /**
@@ -69,6 +78,7 @@ class PostPresenter(postView: PostView) : BasePresenter<PostView>(postView) {
 
     override fun onViewDestroyed() {
         subscription?.dispose()
+        compositeDisposable.dispose()
     }
 
     fun deleteAll(){
