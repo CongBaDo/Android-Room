@@ -1,5 +1,6 @@
 package com.viiam.room.activity
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -23,6 +24,10 @@ abstract class BaseActivity<P : BasePresenter<BaseView>> : BaseView, AppCompatAc
     protected abstract fun instantiatePresenter(): P
 
     override fun getContext(): Context {
+        return this
+    }
+
+    override fun getActivity(): Activity {
         return this
     }
 }

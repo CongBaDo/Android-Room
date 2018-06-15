@@ -13,7 +13,6 @@ import javax.inject.Inject
 import io.reactivex.disposables.CompositeDisposable
 
 
-
 class PostPresenter(postView: PostView) : BasePresenter<PostView>(postView) {
 
     private var TAG : String = "PostPresenter"
@@ -42,7 +41,6 @@ class PostPresenter(postView: PostView) : BasePresenter<PostView>(postView) {
                     Log.e(TAG, "ALO "+it.size)
                     view.updatePosts(it)
                 }))
-
     }
 
     /**
